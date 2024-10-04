@@ -3,11 +3,14 @@ import useDateNow from "../../../hooks/useDateNow";
 import classes from './MyDate.module.css';
 
 const MyDate = (props) => {
-    
-    const getData = useDateNow()
-    console.log(getData, props.defaultValue);
+    const dateNow = useDateNow()
     return (
-        <input  {...props} type='date' className={classes.myDate}></input>
+        <div className={classes.myDate}>
+            {dateNow === props.defaultValue
+                ? <p>Сегодня</p>
+                : <input  {...props} type='date'></input>
+            }
+        </div>
     );
 };
 
