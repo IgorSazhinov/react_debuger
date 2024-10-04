@@ -1,6 +1,7 @@
 import { useState } from 'react'
 import TodoForm from './components/TodoForm'
 import TodoList from './components/TodoList'
+import MyInput from './components/UI/Input/MyInput'
 import './styles/App.css'
 
 function App() {
@@ -21,7 +22,7 @@ function App() {
   return (
     <div className='App'>
       <TodoForm create={createTodo}/>
-      <div className='filterAndSearch'>тут будет поиск и фильтр</div>
+      <MyInput>Найти дело</MyInput>
       {
         todos.length
           ? <TodoList remove={removeTodo} todos={todos}>Список дел:</TodoList>

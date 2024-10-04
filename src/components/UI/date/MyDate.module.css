@@ -1,16 +1,18 @@
 .myDate {
     padding: 5px;
-    border-radius: 5px;
+    
     cursor: pointer;
 }
 
 .myDate input {
     border: 1px solid #00008b;
     padding: 5px;
+    border-radius: 5px;
 }
 
 .myDate p {
     border: 1px solid #00008b;
     padding: 5px 15px;
+    border-radius: 5px;
 }
 
