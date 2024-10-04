@@ -30,7 +30,7 @@ function App() {
       
       <div className='pagination'>тут будет пагинация</div>
     </div>
-  )
-}
+  );
+};
 
 export default App;
