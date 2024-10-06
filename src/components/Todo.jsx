@@ -4,7 +4,7 @@ import MyDate from "./UI/date/MyDate";
 
 
 
-const Todo = ({todo, remove}) => {
+const Todo = ({todo, remove, edit}) => {
 
     return (
         <div className='todo'>
@@ -13,7 +13,7 @@ const Todo = ({todo, remove}) => {
                 <MyDate defaultValue={todo.date} readOnly></MyDate>
             </div>
             <div style={{overflow: 'auto'}} className='todo__text'>{todo.text}</div>
-            <BtnSet todo={todo} remove={remove}/>
+            <BtnSet todo={todo} remove={remove} edit={edit}/>
         </div>
     );
 };
