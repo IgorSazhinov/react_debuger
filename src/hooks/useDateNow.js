@@ -3,6 +3,9 @@ const useDateNow = () => {
     const month = today.getMonth() + 1;
     const year = today.getFullYear();
     const date = today.getDate();
+    if (month < 10 && date < 10) {
+        return `${year}-0${month}-0${date}`;
+    }
     if (month < 10) {
         return `${year}-0${month}-${date}`;
     }
