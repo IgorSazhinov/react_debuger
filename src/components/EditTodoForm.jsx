@@ -1,24 +1,23 @@
 import React from "react";
 import { useState } from "react";
-import useDateNow from "../hooks/useDateNow";
 import MyButton from "./UI/button/Mybutton";
 import MyDate from "./UI/date/MyDate";
 import MyInput from "./UI/Input/MyInput";
 
-const EditTodoForm = ({children, oldTodo, setOldTodo, ...props}) => {
+const EditTodoForm = ({children, oldTodo, setOldTodo, saveEditedTodo, ...props}) => {
     
     const [description, setDescription] = useState('Описание задачи')
+    const [editedTodo, setEditedTodo] = useState({})
 
     // сохраняю старую задачу
     const saveOldTodo = (e) => {
         e.preventDefault()
         if (oldTodo.text != '') {
             const id = oldTodo.id
-            console.log(id);
             const newTodo = {
                 ...oldTodo, id: id, completed: false
             }
-            props.save(newTodo)
+            saveEditedTodo(newTodo)
         } else {
             setDescription('Поле дело обязательно для заполнения')
         }}
@@ -28,6 +27,7 @@ const EditTodoForm = ({children, oldTodo, setOldTodo, ...props}) => {
             <MyDate  value={oldTodo.date} onChange={e => setOldTodo({...oldTodo, date: e.target.value})}/>
             <MyInput value={oldTodo.text} onChange={e => setOldTodo({...oldTodo, text: e.target.value})}>{description}</MyInput>
             <MyButton onClick={saveOldTodo}>{children}</MyButton>
+            <MyButton>Закрыть</MyButton>
         </form>
     );
 };

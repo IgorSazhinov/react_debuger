@@ -10,7 +10,7 @@ const Todo = ({todo, remove, edit}) => {
         <div className='todo'>
             <div style={{display: 'flex'}}>
                 <input style={{margin: '5px'}} type='checkbox'></input>
-                <MyDate defaultValue={todo.date} readOnly></MyDate>
+                <MyDate value={todo.date} readOnly></MyDate>
             </div>
             <div style={{overflow: 'auto'}} className='todo__text'>{todo.text}</div>
             <BtnSet todo={todo} remove={remove} edit={edit}/>

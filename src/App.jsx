@@ -16,6 +16,8 @@ function App() {
   const [visible, setVisible] = useState(false)
   const [oldTodo, setOldTodo] = useState({})
 
+  console.log(todos);
+
   const createTodo = (newTodo) => {
     setTodos([...todos, newTodo])
   }
@@ -27,6 +29,7 @@ function App() {
 
   const saveEditedTodo = (newTodo) => {
     setTodos(todos.map((todo) => {
+        
         if (todo.id === newTodo.id) {
           return newTodo
         }
@@ -44,7 +47,7 @@ function App() {
   return (
     <div className='App'>
       <MyModal visible={visible} setVisible={setVisible}>
-        <EditTodoForm oldTodo={oldTodo} save={saveEditedTodo} setOldTodo={setOldTodo}>Сохранить</EditTodoForm>
+        <EditTodoForm oldTodo={oldTodo} saveEditedTodo={saveEditedTodo} setOldTodo={setOldTodo}>Сохранить</EditTodoForm>
       </MyModal>
       <TodoForm create={createTodo}>Добавить</TodoForm>
       <MyInput>Найти дело</MyInput>
