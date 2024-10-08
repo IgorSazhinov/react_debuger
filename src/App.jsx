@@ -16,8 +16,6 @@ function App() {
   const [visible, setVisible] = useState(false)
   const [oldTodo, setOldTodo] = useState({})
 
-  console.log(todos);
-
   // Добавить дело в список
   const createTodo = (newTodo) => {
     setTodos([...todos, newTodo])
@@ -31,7 +29,11 @@ function App() {
 
   // Сохранить отредактированное дело
   const saveEditedTodo = (newTodo) => {
-    setTodos(todos.map((todo) => {
+    setTodos(
+    //   todos.splice(todos.find(t => t.id == newTodo.id).id, 1, newTodo)
+    //   return todos
+    // }
+      todos.map((todo) => {
         if (todo.id === newTodo.id) {
           return newTodo
         }
@@ -51,7 +53,7 @@ function App() {
   return (
     <div className='App'>
       <MyModal visible={visible} setVisible={setVisible}>
-        <EditTodoForm oldTodo={oldTodo} saveEditedTodo={saveEditedTodo} setOldTodo={setOldTodo} setVisible={setVisible}>Сохранить</EditTodoForm>
+        <EditTodoForm oldTodo={oldTodo} saveEditedTodo={saveEditedTodo} setOldTodo={setOldTodo} setVisible={setVisible} />
       </MyModal>
       <TodoForm create={createTodo}>Добавить</TodoForm>
       <MyInput>Найти дело</MyInput>
@@ -60,7 +62,6 @@ function App() {
           ? <TodoList remove={removeTodo} edit={editTodo} todos={todos}>Список дел:</TodoList>
           : <h1 style={{textAlign: 'center', color: '#00008b'}}>Список дел пуст</h1>
       }
-      
       <div className='pagination'>тут будет пагинация</div>
     </div>
   );

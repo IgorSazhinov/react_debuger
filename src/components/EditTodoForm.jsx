@@ -1,4 +1,5 @@
 import React from "react";
+import { useEffect } from "react";
 import { useState } from "react";
 import MyButton from "./UI/button/Mybutton";
 import MyDate from "./UI/date/MyDate";
@@ -8,15 +9,12 @@ const EditTodoForm = ({oldTodo, setOldTodo, saveEditedTodo, setVisible, ...props
     
     const [description, setDescription] = useState('Описание задачи')
 
+    
     // сохраняю отредактированную задачу
     const saveOldTodo = (e) => {
         e.preventDefault()
         if (oldTodo.text != '') {
-            const id = oldTodo.id
-            const newTodo = {
-                ...oldTodo, id: id, completed: false
-            }
-            saveEditedTodo(newTodo)
+            saveEditedTodo(oldTodo)
         } else {
             setDescription('Поле дело обязательно для заполнения')
         }
