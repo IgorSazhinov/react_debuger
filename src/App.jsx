@@ -59,7 +59,7 @@ function App() {
       <MyInput>Найти дело</MyInput>
       {
         todos.length
-          ? <TodoList remove={removeTodo} edit={editTodo} todos={todos}>Список дел:</TodoList>
+          ? <TodoList remove={removeTodo} edit={editTodo} todos={todos} setTodos={setTodos}>Список дел:</TodoList>
           : <h1 style={{textAlign: 'center', color: '#00008b'}}>Список дел пуст</h1>
       }
       <div className='pagination'>тут будет пагинация</div>
