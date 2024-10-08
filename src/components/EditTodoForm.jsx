@@ -1,5 +1,4 @@
 import React from "react";
-import { useEffect } from "react";
 import { useState } from "react";
 import MyButton from "./UI/button/Mybutton";
 import MyDate from "./UI/date/MyDate";
