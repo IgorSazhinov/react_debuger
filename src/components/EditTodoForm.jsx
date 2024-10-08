@@ -9,7 +9,7 @@ const EditTodoForm = ({oldTodo, setOldTodo, saveEditedTodo, setVisible, ...props
     
     const [description, setDescription] = useState('Описание задачи')
 
-    
+
     // сохраняю отредактированную задачу
     const saveOldTodo = (e) => {
         e.preventDefault()
