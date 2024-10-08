@@ -18,18 +18,20 @@ function App() {
 
   console.log(todos);
 
+  // Добавить дело в список
   const createTodo = (newTodo) => {
     setTodos([...todos, newTodo])
   }
 
+  // Отредактировать дело
   const editTodo = (todo) => {
     setOldTodo(todo)
     setVisible(true)
   }
 
+  // Сохранить отредактированное дело
   const saveEditedTodo = (newTodo) => {
     setTodos(todos.map((todo) => {
-        
         if (todo.id === newTodo.id) {
           return newTodo
         }
@@ -40,6 +42,8 @@ function App() {
     setVisible(false)
   }
 
+
+  // Удалить дело из списка
   const removeTodo = (todo) => {
     setTodos(todos.filter(t => t.id !== todo.id))
   }
@@ -47,7 +51,7 @@ function App() {
   return (
     <div className='App'>
       <MyModal visible={visible} setVisible={setVisible}>
-        <EditTodoForm oldTodo={oldTodo} saveEditedTodo={saveEditedTodo} setOldTodo={setOldTodo}>Сохранить</EditTodoForm>
+        <EditTodoForm oldTodo={oldTodo} saveEditedTodo={saveEditedTodo} setOldTodo={setOldTodo} setVisible={setVisible}>Сохранить</EditTodoForm>
       </MyModal>
       <TodoForm create={createTodo}>Добавить</TodoForm>
       <MyInput>Найти дело</MyInput>

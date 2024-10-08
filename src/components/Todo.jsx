@@ -2,8 +2,6 @@ import React from "react";
 import BtnSet from "./BtnSet";
 import MyDate from "./UI/date/MyDate";
 
-
-
 const Todo = ({todo, remove, edit}) => {
 
     return (

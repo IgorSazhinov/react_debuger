@@ -4,12 +4,11 @@ import MyButton from "./UI/button/Mybutton";
 import MyDate from "./UI/date/MyDate";
 import MyInput from "./UI/Input/MyInput";
 
-const EditTodoForm = ({children, oldTodo, setOldTodo, saveEditedTodo, ...props}) => {
+const EditTodoForm = ({oldTodo, setOldTodo, saveEditedTodo, setVisible, ...props}) => {
     
     const [description, setDescription] = useState('Описание задачи')
-    const [editedTodo, setEditedTodo] = useState({})
 
-    // сохраняю старую задачу
+    // сохраняю отредактированную задачу
     const saveOldTodo = (e) => {
         e.preventDefault()
         if (oldTodo.text != '') {
@@ -20,14 +19,22 @@ const EditTodoForm = ({children, oldTodo, setOldTodo, saveEditedTodo, ...props})
             saveEditedTodo(newTodo)
         } else {
             setDescription('Поле дело обязательно для заполнения')
-        }}
+        }
+    }
+
+    // Не сохранять запись
+    const closeOldTodo = (e) => {
+        e.preventDefault()
+        setVisible(false)
+    }
+    
 
     return (
         <form className="todoForm">
             <MyDate  value={oldTodo.date} onChange={e => setOldTodo({...oldTodo, date: e.target.value})}/>
             <MyInput value={oldTodo.text} onChange={e => setOldTodo({...oldTodo, text: e.target.value})}>{description}</MyInput>
-            <MyButton onClick={saveOldTodo}>{children}</MyButton>
-            <MyButton>Закрыть</MyButton>
+            <MyButton onClick={saveOldTodo}>Сохранить</MyButton>
+            <MyButton onClick={closeOldTodo}>Закрыть</MyButton>
         </form>
     );
 };
