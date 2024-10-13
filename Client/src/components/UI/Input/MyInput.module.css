@@ -1,8 +1,9 @@
 .myInput {
     width: 100%;
     padding: 5px 15px;
-    margin: 5px;
+    margin: 0 5px;
     border: 1px solid #00008b;
     border-radius: 5px;
     cursor: pointer;
+    font-size: 14px;
 }

@@ -15,7 +15,7 @@ function App() {
     {id: 3, date: '2018-07-25', text: 'Нужно написать ', completed: true} 
   ])
   const [visible, setVisible] = useState(false)
-  const [oldTodo, setOldTodo] = useState({})
+  const [oldTodo, setOldTodo] = useState({id: null, date: '', text: '', completed: false})
 
   /** 
    * Добавить новое дело в список
@@ -53,7 +53,7 @@ function App() {
         return t
       })
     )
-    setOldTodo({})
+    setOldTodo({id: null, date: '', text: '', completed: false})
     setVisible(false)
   }
 

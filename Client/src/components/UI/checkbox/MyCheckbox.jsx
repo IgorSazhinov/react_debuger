@@ -4,7 +4,7 @@ import classes from './MyCheckbox.module.css';
 const MyCheckbox = (props) => {
 
     return (
-        <input {...props} id="html" type="checkbox" className={classes.myCheckbox}/>
+        <input {...props} type="checkbox" className={classes.myCheckbox}/>
     );
 };
 
