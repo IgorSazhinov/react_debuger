@@ -4,6 +4,7 @@ import classes from './MyModal.module.css';
 const MyModal = ({children, visible, setVisible}) => {
 
     const rootClasses = [classes.myModal]
+    
     if (visible) {
         rootClasses.push(classes.active)
     }

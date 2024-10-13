@@ -38,19 +38,19 @@ function App() {
 
   /** 
    * Сохранить отредактированное дело
-   * @param {object} newTodo - новое дело после того как его отредактировали
+   * @param {object} todo - дело после того как его отредактировали
    * @description помещаю в состояние todos новый массив с измененным делом. Очищаю oldTodo. Закрываю модалку.
    */ 
-  const saveEditedTodo = (newTodo) => {
+  const saveEditedTodo = (todo) => {
     setTodos(
     //   todos.splice(todos.find(t => t.id == newTodo.id).id, 1, newTodo)
     //   return todos
     // }
-      todos.map((todo) => {
-        if (todo.id === newTodo.id) {
-          return newTodo
+      todos.map((t) => {
+        if (t.id === todo.id) {
+          return todo
         }
-        return todo
+        return t
       })
     )
     setOldTodo({})
@@ -65,6 +65,23 @@ function App() {
     setTodos(todos.filter(t => t.id !== todo.id))
   }
 
+
+  /** Изменения состояния выполненного дела из списка
+   * @param {object} todo - дело по которому сработало событие изменения состояния completed
+   * @param {object} checkIn - состояние completed до изменения
+   * @description помещаю в состояние todos с выполненным/не выполенным делом
+   */
+  const editComlitedTodo = (todo, checkIn) => {
+    setTodos(
+      todos.map((t) => {
+        if (t.id === todo.id) {
+          return {...t, completed: !checkIn}
+        }
+        return t
+      })
+    );
+  };
+
   return (
     <div className='App'>
       <MyModal visible={visible} setVisible={setVisible}>
@@ -74,7 +91,7 @@ function App() {
       <MyInput>Найти дело</MyInput>
       {
         todos.length
-          ? <TodoList remove={removeTodo} edit={editTodo} todos={todos} setTodos={setTodos} />
+          ? <TodoList remove={removeTodo} edit={editTodo} todos={todos} setTodos={setTodos} editComlitedTodo={editComlitedTodo}/>
           : <MyTitle>Список дел пуст</MyTitle>
       }
       <div className='pagination'>тут будет пагинация</div>

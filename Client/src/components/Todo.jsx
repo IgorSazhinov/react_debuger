@@ -1,18 +1,18 @@
 import React from "react";
 import { useState } from "react";
 import BtnSet from "./BtnSet";
+import MyBody from "./UI/body/MyBody";
 import MyCheckbox from "./UI/checkbox/MyCheckbox";
 import MyDate from "./UI/date/MyDate";
 
-const Todo = ({todo, remove, edit, setTodos}) => {
+const Todo = ({todo, remove, edit, editComlitedTodo}) => {
     const [checkIn, setCheckIn] = useState(todo.completed)
 
 
     const soldCheckbox = ({target: {checked}}) => {
         setCheckIn(checked)
-        console.log(checkIn);
+        editComlitedTodo(todo, checkIn)
     }
-    
 
     return (
         <div className='todo'>
@@ -20,7 +20,7 @@ const Todo = ({todo, remove, edit, setTodos}) => {
                 <MyCheckbox onChange={soldCheckbox} checked={checkIn}></MyCheckbox>
                 <MyDate value={todo.date} readOnly></MyDate>
             </div>
-            <div style={{overflow: 'auto'}} className='todo__text'>{todo.text}</div>
+            <MyBody checkIn={checkIn}>{todo.text}</MyBody>
             <BtnSet todo={todo} remove={remove} edit={edit}/>
         </div>
     );

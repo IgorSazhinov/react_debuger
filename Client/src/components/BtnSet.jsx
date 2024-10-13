@@ -2,7 +2,7 @@ import React from "react";
 import MyButton from "./UI/button/Mybutton";
 
 const BtnSet = (props) => {
-    
+
     return (
         <div className="btnSet">
             <MyButton onClick={() => props.edit(props.todo)}>Редактировать</MyButton>
