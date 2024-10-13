@@ -5,6 +5,7 @@ import TodoForm from './components/TodoForm'
 import TodoList from './components/TodoList'
 import MyInput from './components/UI/Input/MyInput'
 import MyModal from "./components/UI/MyModal/MyModal";
+import MyTitle from "./components/UI/title/MyTitle";
 import './styles/App.css'
 
 function App() {
@@ -59,8 +60,8 @@ function App() {
       <MyInput>Найти дело</MyInput>
       {
         todos.length
-          ? <TodoList remove={removeTodo} edit={editTodo} todos={todos} setTodos={setTodos}>Список дел:</TodoList>
-          : <h1 style={{textAlign: 'center', color: '#00008b'}}>Список дел пуст</h1>
+          ? <TodoList remove={removeTodo} edit={editTodo} todos={todos} setTodos={setTodos} />
+          : <MyTitle>Список дел пуст</MyTitle>
       }
       <div className='pagination'>тут будет пагинация</div>
     </div>

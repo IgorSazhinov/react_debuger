@@ -1,10 +1,11 @@
 import React from "react";
 import Todo from "./Todo";
+import MyTitle from "./UI/title/MyTitle";
 
-const TodoList = ({todos, remove, children, edit, setTodos}) => {
+const TodoList = ({todos, remove, edit, setTodos}) => {
     return (
         <div className='todoList'>
-            <h1 style={{textAlign: 'center', color: '#00008b'}}>{children}</h1>
+            <MyTitle>Список дел:</MyTitle>
             {todos.map(todo => 
                 <Todo remove={remove} edit={edit} todo={todo} key={todo.id} setTodos={setTodos}></Todo>
             )}
