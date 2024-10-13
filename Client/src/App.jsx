@@ -17,18 +17,30 @@ function App() {
   const [visible, setVisible] = useState(false)
   const [oldTodo, setOldTodo] = useState({})
 
-  // Добавить дело в список
+  /** 
+   * Добавить новое дело в список
+   * @param {object} newTodo - новое дело из формы
+   * @description помещаю в состояние todos новый массив из старого массива и нового дела
+   */
   const createTodo = (newTodo) => {
     setTodos([...todos, newTodo])
   }
 
-  // Отредактировать дело
+  /** 
+   * Отредактировать дело
+   * @param {object} todo - дело из списка, по которому сработало событие для редактирования
+   * @description помещаю в состояние oldTodo дело для редактирования и отображаю модалку с редактором дела
+   */
   const editTodo = (todo) => {
     setOldTodo(todo)
     setVisible(true)
   }
 
-  // Сохранить отредактированное дело
+  /** 
+   * Сохранить отредактированное дело
+   * @param {object} newTodo - новое дело после того как его отредактировали
+   * @description помещаю в состояние todos новый массив с измененным делом. Очищаю oldTodo. Закрываю модалку.
+   */ 
   const saveEditedTodo = (newTodo) => {
     setTodos(
     //   todos.splice(todos.find(t => t.id == newTodo.id).id, 1, newTodo)
@@ -45,8 +57,10 @@ function App() {
     setVisible(false)
   }
 
-
-  // Удалить дело из списка
+  /** Удалить дело из списка
+   * @param {object} todo - дело по которому сработало событие удаления
+   * @description помещаю в состояние todos отфильтрованный массив без указанного дела
+   */
   const removeTodo = (todo) => {
     setTodos(todos.filter(t => t.id !== todo.id))
   }
