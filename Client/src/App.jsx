@@ -88,13 +88,15 @@ function App() {
         <EditTodoForm oldTodo={oldTodo} saveEditedTodo={saveEditedTodo} setOldTodo={setOldTodo} setVisible={setVisible} />
       </MyModal>
       <TodoForm create={createTodo}>Добавить</TodoForm>
-      <MyInput>Найти дело</MyInput>
+      <div style={{display: 'flex', marginTop: '5px'}}>
+        <MyInput>Найти дело</MyInput>
+      </div>
       {
         todos.length
           ? <TodoList remove={removeTodo} edit={editTodo} todos={todos} setTodos={setTodos} editComlitedTodo={editComlitedTodo}/>
           : <MyTitle>Список дел пуст</MyTitle>
       }
-      <div className='pagination'>тут будет пагинация</div>
+      <div className='pagination'></div>
     </div>
   );
 };
