@@ -12,18 +12,7 @@ const useDateNow = () => {
     if (date < 10) {
         return `${year}-${month}-0${date}`;
     }
-    console.log(`${year}-${month}-${date}`);
     return `${year}-${month}-${date}`;
 }
-
-
-
-// const dateNow = (date) => {
-//     const Now = dateNow()
-//     if (date != Now || date === null) {
-//         return dateNow
-//     }
-//     return 'Сегодня'
-// }
 
 export default useDateNow

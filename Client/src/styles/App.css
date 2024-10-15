@@ -17,9 +17,9 @@
   display: flex;
   justify-content: space-between;
   align-items: center;
-  padding: 15px;
+  padding: 10px;
   border: 2px solid #00008b;
-  margin-top: 15px;
+  margin-top: 10px;
   border-radius: 10px;
 }
 

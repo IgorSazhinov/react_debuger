@@ -1,5 +1,6 @@
 import React from "react";
 import { useState } from "react";
+import useDateNow from "../hooks/useDateNow";
 import BtnSet from "./BtnSet";
 import MyBody from "./UI/body/MyBody";
 import MyCheckbox from "./UI/checkbox/MyCheckbox";
@@ -13,11 +14,15 @@ const Todo = ({todo, remove, edit, editComlitedTodo}) => {
         editComlitedTodo(todo, checkIn)
     }
 
-    const date = todo.date.split('-').reverse().join('.')
+    let date = todo.date.split('-').reverse().join('.')
+    const dateNow = useDateNow()
+    if (dateNow === todo.date) {
+        date = 'Сегодня'
+    }
 
     return (
         <div className='todo'>
-            <div style={{display: 'flex'}}>
+            <div style={{display: 'flex', margin: '5px'}}>
                 <MyCheckbox onChange={soldCheckbox} checked={checkIn}></MyCheckbox>
                 <MyBody>{date}</MyBody>
             </div>
