@@ -36,23 +36,18 @@ function App() {
     setVisible(true)
   }
 
+
   /** 
    * Сохранить отредактированное дело
    * @param {object} todo - дело после того как его отредактировали
    * @description помещаю в состояние todos новый массив с измененным делом. Очищаю oldTodo. Закрываю модалку.
    */ 
   const saveEditedTodo = (todo) => {
-    setTodos(
-    //   todos.splice(todos.find(t => t.id == newTodo.id).id, 1, newTodo)
-    //   return todos
-    // }
-      todos.map((t) => {
-        if (t.id === todo.id) {
-          return todo
-        }
-        return t
-      })
-    )
+    setTodos(() => {
+      const i = todos.findIndex(el => el.id === todo.id)
+      todos[i] = todo
+      return todos
+    })
     setOldTodo({id: null, date: '', text: '', completed: false})
     setVisible(false)
   }
@@ -69,18 +64,15 @@ function App() {
   /** Изменения состояния выполненного дела из списка
    * @param {object} todo - дело по которому сработало событие изменения состояния completed
    * @param {object} checkIn - состояние completed до изменения
-   * @description помещаю в состояние todos с выполненным/не выполенным делом
+   * @description помещаю в состояние todos с выполненным или невыполенным делом
    */
   const editComlitedTodo = (todo, checkIn) => {
-    setTodos(
-      todos.map((t) => {
-        if (t.id === todo.id) {
-          return {...t, completed: !checkIn}
-        }
-        return t
-      })
-    );
-  };
+    setTodos(() => {
+      const i = todos.findIndex(el => el.id === todo.id)
+      todos[i] = {...todo, completed: !checkIn}
+      return todos
+    })
+  }
 
   return (
     <div className='App'>
