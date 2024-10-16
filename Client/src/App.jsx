@@ -1,4 +1,5 @@
 import React from "react";
+import { useMemo } from "react";
 import { useState } from 'react'
 import EditTodoForm from "./components/EditTodoForm";
 import TodoForm from './components/TodoForm'
@@ -21,8 +22,8 @@ function App() {
   const [selectedSort, setSelectedSort] = useState('')
   const [searchQuery, setSearchQuery] = useState('')
 
-
-  const sortedTodos = () => {
+  // выбор типа сортировки
+  const selectSortType = () => {
     if (selectedSort === 'text' || selectedSort === 'date') {
       return [...todos].sort((a, b) => a[selectedSort].localeCompare(b[selectedSort]))
     }
@@ -34,11 +35,22 @@ function App() {
     }
   }
 
-  const getSortedTodos = () => {
+  // сортировка
+  const sortedTodos = useMemo(() => {
     if (selectedSort) {
-      return sortedTodos()
+      return selectSortType()
     }
     return todos
+  }, [selectedSort, todos, visible])
+
+  // поиск + сортировка
+  const sortedAndSearchedTodo = useMemo(() => {
+    return sortedTodos.filter(todo => todo.text.toLowerCase().includes(searchQuery.toLowerCase()))
+  }, [searchQuery, sortedTodos])
+
+  // меняем тип сортировки
+  const sortTodos = (sort) => {
+    setSelectedSort(sort)
   }
 
   /** 
@@ -98,11 +110,9 @@ function App() {
     })
   }
 
-  const sortTodos = (sort) => {
-    setSelectedSort(sort)
-  }
 
-  console.log(todos);
+
+  // console.log(todos);
   return (
     <div className='App'>
       <MyModal visible={visible} setVisible={setVisible}>
@@ -124,8 +134,8 @@ function App() {
         />
       </div>
       {
-        todos.length
-          ? <TodoList remove={removeTodo} edit={editTodo} todos={getSortedTodos()} setTodos={setTodos} editComlitedTodo={editComlitedTodo}/>
+        sortedAndSearchedTodo.length
+          ? <TodoList remove={removeTodo} edit={editTodo} todos={sortedAndSearchedTodo} setTodos={setTodos} editComlitedTodo={editComlitedTodo}/>
           : <MyTitle>Список дел пуст</MyTitle>
       }
       <div className='pagination'></div>
