@@ -5,17 +5,41 @@ import TodoForm from './components/TodoForm'
 import TodoList from './components/TodoList'
 import MyInput from './components/UI/Input/MyInput'
 import MyModal from "./components/UI/MyModal/MyModal";
+import MySelect from "./components/UI/select/MySelect";
 import MyTitle from "./components/UI/title/MyTitle";
+import useDateNow from "./hooks/useDateNow";
 import './styles/App.css'
 
 function App() {
   const [todos, setTodos] = useState([
-    {id: 1, date: '2018-07-22', text: 'Нужно написать код', completed: false},
-    {id: 2, date: '2018-07-21', text: 'Нужно исправить код', completed: false},
-    {id: 3, date: '2018-07-25', text: 'Нужно написать ', completed: true} 
+    {id: 1, date: '2018-07-22', text: '3Нужно написать код', completed: false},
+    {id: 2, date: '2018-07-21', text: '2Нужно исправить код', completed: false},
+    {id: 3, date: '2018-07-25', text: '1Нужно написать ', completed: true} 
   ])
   const [visible, setVisible] = useState(false)
   const [oldTodo, setOldTodo] = useState({id: null, date: '', text: '', completed: false})
+  const [selectedSort, setSelectedSort] = useState('')
+  const [searchQuery, setSearchQuery] = useState('')
+
+
+  const sortedTodos = () => {
+    if (selectedSort === 'text' || selectedSort === 'date') {
+      return [...todos].sort((a, b) => a[selectedSort].localeCompare(b[selectedSort]))
+    }
+    if (selectedSort === 'today') {
+      return todos.filter(t => t.date === useDateNow())
+    }
+    if (selectedSort === 'completed') {
+      return todos.filter(t => !t.completed)
+    }
+  }
+
+  const getSortedTodos = () => {
+    if (selectedSort) {
+      return sortedTodos()
+    }
+    return todos
+  }
 
   /** 
    * Добавить новое дело в список
@@ -74,6 +98,11 @@ function App() {
     })
   }
 
+  const sortTodos = (sort) => {
+    setSelectedSort(sort)
+  }
+
+  console.log(todos);
   return (
     <div className='App'>
       <MyModal visible={visible} setVisible={setVisible}>
@@ -81,14 +110,22 @@ function App() {
       </MyModal>
       <TodoForm create={createTodo}>Добавить</TodoForm>
       <div style={{display: 'flex', marginTop: '5px'}}>
-        <MyInput>Найти дело</MyInput> 
-        <select>
-          <option value="">123</option>
-        </select>
+        <MyInput value={searchQuery} onChange={e => setSearchQuery(e.target.value)}>Найти дело</MyInput> 
+        <MySelect
+          defaultValue='Сортировка по'
+          options={[
+            {value: 'text', name: 'Названию'},
+            {value: 'date', name: 'Дате'},
+            {value: 'today', name: 'Только Сегодня'},
+            {value: 'completed', name: 'Невыполненные'}
+          ]}
+          value={selectedSort}
+          onChange={sortTodos}
+        />
       </div>
       {
         todos.length
-          ? <TodoList remove={removeTodo} edit={editTodo} todos={todos} setTodos={setTodos} editComlitedTodo={editComlitedTodo}/>
+          ? <TodoList remove={removeTodo} edit={editTodo} todos={getSortedTodos()} setTodos={setTodos} editComlitedTodo={editComlitedTodo}/>
           : <MyTitle>Список дел пуст</MyTitle>
       }
       <div className='pagination'></div>
