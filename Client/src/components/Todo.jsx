@@ -22,7 +22,7 @@ const Todo = ({todo, remove, edit, editComlitedTodo}) => {
 
     return (
         <div className='todo'>
-            <div style={{display: 'flex', margin: '5px'}}>
+            <div style={{display: 'flex', margin: '5px', minWidth: '100px', justifyContent: 'space-between'}}>
                 <MyCheckbox onChange={soldCheckbox} checked={checkIn}></MyCheckbox>
                 <MyBody>{date}</MyBody>
             </div>

@@ -81,7 +81,10 @@ function App() {
       </MyModal>
       <TodoForm create={createTodo}>Добавить</TodoForm>
       <div style={{display: 'flex', marginTop: '5px'}}>
-        <MyInput>Найти дело</MyInput>
+        <MyInput>Найти дело</MyInput> 
+        <select>
+          <option value="">123</option>
+        </select>
       </div>
       {
         todos.length
