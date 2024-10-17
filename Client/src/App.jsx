@@ -1,4 +1,6 @@
+import axios from "axios";
 import React from "react";
+import { useEffect } from "react";
 import { useMemo } from "react";
 import { useState } from 'react'
 import EditTodoForm from "./components/EditTodoForm";
@@ -12,15 +14,24 @@ import useDateNow from "./hooks/useDateNow";
 import './styles/App.css'
 
 function App() {
-  const [todos, setTodos] = useState([
-    {id: 1, date: '2018-07-22', text: '3Нужно написать код', completed: false},
-    {id: 2, date: '2018-07-21', text: '2Нужно исправить код', completed: false},
-    {id: 3, date: '2018-07-25', text: '1Нужно написать ', completed: true} 
-  ])
+  const [todos, setTodos] = useState([])
   const [visible, setVisible] = useState(false)
   const [oldTodo, setOldTodo] = useState({id: null, date: '', text: '', completed: false})
   const [selectedSort, setSelectedSort] = useState('date')
   const [searchQuery, setSearchQuery] = useState('')
+
+
+
+  useEffect(() => {
+    fetchTodo()
+  }, [])
+
+  async function fetchTodo() {
+    const response = await axios.get('http://localhost:3000/')
+    setTodos(response.data)
+  }
+
+  
 
   // выбор типа сортировки
   const selectSortType = () => {
@@ -71,7 +82,6 @@ function App() {
     setOldTodo(todo)
     setVisible(true)
   }
-  console.log(oldTodo);
 
   /** 
    * Сохранить отредактированное дело
