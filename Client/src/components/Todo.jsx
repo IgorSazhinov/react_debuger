@@ -14,6 +14,7 @@ const Todo = ({todo, remove, edit, editComlitedTodo}) => {
         editComlitedTodo(todo, checkIn)
     }
 
+
     let date = todo.date.split('-').reverse().join('.')
     const dateNow = useDateNow()
     if (dateNow === todo.date) {

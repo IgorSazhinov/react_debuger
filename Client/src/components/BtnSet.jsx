@@ -1,12 +1,12 @@
 import React from "react";
 import MyButton from "./UI/button/Mybutton";
 
-const BtnSet = (props) => {
+const BtnSet = ({edit, remove, todo}) => {
 
     return (
         <div className="btnSet">
-            <MyButton onClick={() => props.edit(props.todo)}>Редактировать</MyButton>
-            <MyButton onClick={() => props.remove(props.todo)}>Удалить</MyButton>
+            <MyButton onClick={() => edit(todo)}>Редактировать</MyButton>
+            <MyButton onClick={() => remove(todo)}>Удалить</MyButton>
         </div>
     );
 };

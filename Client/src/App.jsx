@@ -19,7 +19,7 @@ function App() {
   ])
   const [visible, setVisible] = useState(false)
   const [oldTodo, setOldTodo] = useState({id: null, date: '', text: '', completed: false})
-  const [selectedSort, setSelectedSort] = useState('')
+  const [selectedSort, setSelectedSort] = useState('date')
   const [searchQuery, setSearchQuery] = useState('')
 
   // выбор типа сортировки
@@ -46,7 +46,7 @@ function App() {
   // поиск + сортировка
   const sortedAndSearchedTodo = useMemo(() => {
     return sortedTodos.filter(todo => todo.text.toLowerCase().includes(searchQuery.toLowerCase()))
-  }, [searchQuery, sortedTodos])
+  }, [searchQuery, sortedTodos, visible])
 
   // меняем тип сортировки
   const sortTodos = (sort) => {
@@ -71,7 +71,7 @@ function App() {
     setOldTodo(todo)
     setVisible(true)
   }
-
+  console.log(oldTodo);
 
   /** 
    * Сохранить отредактированное дело
@@ -105,14 +105,12 @@ function App() {
   const editComlitedTodo = (todo, checkIn) => {
     setTodos(() => {
       const i = todos.findIndex(el => el.id === todo.id)
+      console.log(i);
       todos[i] = {...todo, completed: !checkIn}
       return todos
     })
   }
 
-
-
-  // console.log(todos);
   return (
     <div className='App'>
       <MyModal visible={visible} setVisible={setVisible}>
@@ -124,8 +122,8 @@ function App() {
         <MySelect
           defaultValue='Сортировка по'
           options={[
-            {value: 'text', name: 'Названию'},
             {value: 'date', name: 'Дате'},
+            {value: 'text', name: 'Названию'},
             {value: 'today', name: 'Только Сегодня'},
             {value: 'completed', name: 'Невыполненные'}
           ]}
