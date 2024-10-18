@@ -1,0 +1,31 @@
+* {
+  padding: 0;
+  margin: 0;
+  box-sizing: border-box;
+  font-family: sans-serif;
+}
+
+#root {
+  display: flex;
+  justify-content: center;
+}
+
+.App {
+  width: 800px;
+}
+
+.todo {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 10px;
+  border: 2px solid #00008b;
+  margin-top: 10px;
+  border-radius: 10px;
+}
+
+.todoForm {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
