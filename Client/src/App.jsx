@@ -28,7 +28,7 @@ function App() {
 
   // фетч запрос на сервер
   async function fetchTodo() {
-    const response = await axios.get('http://localhost:7000/')
+    const response = await axios.get('http://localhost:7000/todos/')
     setTodos(response.data)
   }
 
@@ -69,7 +69,7 @@ function App() {
   }, [selectedSort, todos, oldTodo])
 
   /** 
-   * Выполняем поис + сортировку
+   * Выполняем поиск после сортировки
    * @param {object} sortedTodos - отсортированное дело.
    * @param {string} searchQuery - состояние строки поиска.
    * @description отсортированный список фильтруем по строке поиска. всё обёрнуто в useMemo.

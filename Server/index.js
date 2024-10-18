@@ -8,14 +8,14 @@ app.use(cors())
 app.use(express.json())
 
 
-let todo = [
+let todos = [
     {id: 1, date: '2018-07-22', text: '3Нужно написать код', completed: false},
     {id: 2, date: '2018-07-21', text: '2Нужно исправить код', completed: false},
     {id: 3, date: '2018-07-25', text: '1Нужно написать ', completed: true} 
   ]
 
-app.get('/', (req, res) => {
-    res.status(200).json(todo)
+app.get('/todos/', (req, res) => {
+    res.status(200).json(todos)
 })
 
 const start = async () => {
