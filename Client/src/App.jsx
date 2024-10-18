@@ -1,17 +1,15 @@
 import axios from "axios";
 import React from "react";
-import { useEffect } from "react";
-import { useMemo } from "react";
-import { useState } from 'react'
+import { useEffect, useMemo, useState } from "react";
 import EditTodoForm from "./components/EditTodoForm";
-import TodoForm from './components/TodoForm'
-import TodoList from './components/TodoList'
-import MyInput from './components/UI/Input/MyInput'
+import TodoForm from './components/TodoForm';
+import TodoList from './components/TodoList';
+import MyInput from './components/UI/Input/MyInput';
 import MyModal from "./components/UI/MyModal/MyModal";
 import MySelect from "./components/UI/select/MySelect";
 import MyTitle from "./components/UI/title/MyTitle";
 import useDateNow from "./hooks/useDateNow";
-import './styles/App.css'
+import './styles/App.css';
 
 function App() {
   const [todos, setTodos] = useState([])
@@ -19,6 +17,7 @@ function App() {
   const [oldTodo, setOldTodo] = useState({id: null, date: '', text: '', completed: false})
   const [selectedSort, setSelectedSort] = useState('date')
   const [searchQuery, setSearchQuery] = useState('')
+  const [connectionCompleted, setConnectionCompleted] = useState(false)
 
   // первая отрисовка при загрузке страницы
   useEffect(() => {
@@ -31,7 +30,9 @@ function App() {
 
   // фетч запрос на сервер
   async function fetchTodo() {
-    const response = await axios.get('http://localhost:7000/todos/')
+    const response = await axios.get('http://localhost:7000/todos/').catch( () => {
+      console.log(123);
+    })
     setTodos(response.data)
   }
 
@@ -39,6 +40,8 @@ function App() {
     const res = await axios.post('http://localhost:7000/todos/', {
       method: 'POST',
       date: todos
+    }).catch( () => {
+      console.log(123);
     })
   }
 
