@@ -150,9 +150,13 @@ function App() {
 
   return (
     <div className='App'>
-      <MyModal visible={visible} setVisible={setVisible}>
-        <EditTodoForm oldTodo={oldTodo} saveEditedTodo={saveEditedTodo} setOldTodo={setOldTodo} setVisible={setVisible} />
-      </MyModal>
+      {
+        visible
+          ? <MyModal visible={visible} setVisible={setVisible}>
+              <EditTodoForm oldTodo={oldTodo} saveEditedTodo={saveEditedTodo} setOldTodo={setOldTodo} setVisible={setVisible} />
+            </MyModal>
+          : <></>
+      }
       <TodoForm create={createTodo}>Добавить</TodoForm>
       <div style={{display: 'flex', marginTop: '5px'}}>
         <MyInput value={searchQuery} onChange={e => setSearchQuery(e.target.value)}>Найти дело</MyInput> 
