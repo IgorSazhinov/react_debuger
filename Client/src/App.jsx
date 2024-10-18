@@ -27,7 +27,7 @@ function App() {
   }, [])
 
   async function fetchTodo() {
-    const response = await axios.get('http://localhost:3000/')
+    const response = await axios.get('http://localhost:7000/')
     setTodos(response.data)
   }
 
@@ -52,12 +52,12 @@ function App() {
       return selectSortType()
     }
     return todos
-  }, [selectedSort, todos, visible])
+  }, [selectedSort, todos, visible, oldTodo])
 
   // поиск + сортировка
   const sortedAndSearchedTodo = useMemo(() => {
     return sortedTodos.filter(todo => todo.text.toLowerCase().includes(searchQuery.toLowerCase()))
-  }, [searchQuery, sortedTodos, visible])
+  }, [searchQuery, sortedTodos, visible, oldTodo])
 
   // меняем тип сортировки
   const sortTodos = (sort) => {
@@ -107,7 +107,7 @@ function App() {
   }
 
 
-  /** Изменения состояния выполненного дела из списка
+  /** Изменение состояния выполненного дела из списка
    * @param {object} todo - дело по которому сработало событие изменения состояния completed
    * @param {object} checkIn - состояние completed до изменения
    * @description помещаю в состояние todos с выполненным или невыполенным делом
@@ -115,10 +115,10 @@ function App() {
   const editComlitedTodo = (todo, checkIn) => {
     setTodos(() => {
       const i = todos.findIndex(el => el.id === todo.id)
-      console.log(i);
       todos[i] = {...todo, completed: !checkIn}
       return todos
     })
+    setOldTodo({id: null, date: '', text: '', completed: false})
   }
 
   return (
@@ -134,7 +134,7 @@ function App() {
           options={[
             {value: 'date', name: 'Дате'},
             {value: 'text', name: 'Названию'},
-            {value: 'today', name: 'Только Сегодня'},
+            {value: 'today', name: 'Только за сегодня'},
             {value: 'completed', name: 'Невыполненные'}
           ]}
           value={selectedSort}

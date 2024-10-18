@@ -7,7 +7,14 @@ const TodoList = ({todos, remove, edit, setTodos, editComlitedTodo}) => {
         <div className='todoList'>
             <MyTitle>Список дел:</MyTitle>
             {todos.map(todo => 
-                <Todo remove={remove} edit={edit} todo={todo} key={todo.id} setTodos={setTodos} editComlitedTodo={editComlitedTodo}></Todo>
+                <Todo 
+                    remove={remove} 
+                    edit={edit} 
+                    todo={todo} 
+                    key={todo.id} 
+                    setTodos={setTodos} 
+                    editComlitedTodo={editComlitedTodo} 
+                />
             )}
         </div>
     );
