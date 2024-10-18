@@ -20,7 +20,6 @@ function App() {
   const [selectedSort, setSelectedSort] = useState('date')
   const [searchQuery, setSearchQuery] = useState('')
 
-
   // первая отрисовка при загрузке страницы
   useEffect(() => {
     fetchTodo()
@@ -28,8 +27,7 @@ function App() {
 
   useEffect(() => {
     pushTodo()
-  }, [todos])
-
+  }, [todos, oldTodo])
 
   // фетч запрос на сервер
   async function fetchTodo() {
@@ -43,9 +41,6 @@ function App() {
       date: todos
     })
   }
-
-  
-  
 
   /** 
    * Выбор типа сортировки
@@ -145,7 +140,6 @@ function App() {
   const removeTodo = (todo) => {
     setTodos(todos.filter(t => t.id !== todo.id))
   }
-
 
   /** Изменение состояния выполненного дела из списка
    * @param {object} todo - дело по которому сработало событие изменения состояния completed
