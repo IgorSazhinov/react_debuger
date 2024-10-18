@@ -9,9 +9,9 @@ app.use(express.json())
 
 
 let todos = [
-    {id: 1, date: '2018-07-22', text: '3Нужно написать код', completed: false},
-    {id: 2, date: '2018-07-21', text: '2Нужно исправить код', completed: false},
-    {id: 3, date: '2018-07-25', text: '1Нужно написать ', completed: true} 
+    {id: 1, date: '2018-07-22', text: 'Нужно написать код', completed: false},
+    {id: 2, date: '2018-07-21', text: 'Нужно исправить код', completed: false},
+    {id: 3, date: '2018-07-25', text: 'Нужно написать код ещё раз', completed: true} 
   ]
 
 app.get('/todos/', (req, res) => {

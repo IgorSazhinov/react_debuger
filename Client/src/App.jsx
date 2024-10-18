@@ -26,9 +26,9 @@ function App() {
     fetchTodo()
   }, [])
 
-  useEffect(() => {
-    pushTodo()
-  }, [todos])
+  // useEffect(() => {
+  //   pushTodo()
+  // }, [todos])
 
 
   // фетч запрос на сервер
