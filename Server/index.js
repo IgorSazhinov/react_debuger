@@ -18,6 +18,11 @@ app.get('/todos/', (req, res) => {
     res.status(200).json(todos)
 })
 
+app.post('/todos/', (req, res) => {
+    todos = JSON.parse(req.body)
+    res.status(200).json(todos)
+})
+
 const start = async () => {
     try {
         app.listen(PORT, () => console.log(`Сервер запущен на порту: ${PORT}`))
