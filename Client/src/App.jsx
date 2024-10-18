@@ -21,11 +21,12 @@ function App() {
   const [searchQuery, setSearchQuery] = useState('')
 
 
-
+  // первая отрисовка при загрузке страницы
   useEffect(() => {
     fetchTodo()
   }, [])
 
+  // фетч запрос на сервер
   async function fetchTodo() {
     const response = await axios.get('http://localhost:7000/')
     setTodos(response.data)
@@ -33,7 +34,12 @@ function App() {
 
   
 
-  // выбор типа сортировки
+  /** 
+   * Выбор типа сортировки
+   * @param {string} selectedSort - состояния последней выбранной сортировки. может принимать: 'text' - описание дела; 'date' - срок выполнения дела; 'today' - срок сегодня; 'completed' - выполнено или нет.
+   * @description для 'text' и 'date' используем метод localeCompare(); для 'today' фильтруем с помощью кастомного метода useDateNow(); для 'completed' фильтруем по обратному параметру completed
+   * @return возвращаем тип сортировки. Далее эта функция будет вызвана в sortedTodos
+  */
   const selectSortType = () => {
     if (selectedSort === 'text' || selectedSort === 'date') {
       return [...todos].sort((a, b) => a[selectedSort].localeCompare(b[selectedSort]))
@@ -46,7 +52,16 @@ function App() {
     }
   }
 
-  // сортировка
+  /** 
+   * Выполняем сортировку
+   * @param {string} selectedSort - состояния последней выбранной сортировки. может принимать: 'text' - описание дела; 'date' - срок выполнения дела; 'today' - срок сегодня; 'completed' - выполнено или нет.
+   * @description выполняем проверку на случай незаданного типа сортировки. Выполняем сортировку обернутую в useMemo
+   * @dependency selectedSort - отслеживаем изменение типа сортировки
+   * @dependency todos - отслеживаем изменение массива со списком дел
+   * @dependency visible - отслеживаем появление скрытие модалки редактирования дела
+   * @dependency oldTodo - отслеживаем изменения отредактированого дела
+   * @return возвращаем отсортированный массив. Далее отдадам его в функцию sortedAndSearchedTodo
+   */
   const sortedTodos = useMemo(() => {
     if (selectedSort) {
       return selectSortType()
@@ -54,12 +69,26 @@ function App() {
     return todos
   }, [selectedSort, todos, visible, oldTodo])
 
-  // поиск + сортировка
+  /** 
+   * Выполняем поис + сортировку
+   * @param {object} sortedTodos - отсортированное дело.
+   * @param {string} searchQuery - состояние строки поиска.
+   * @description отсортированный список фильтруем по строке поиска. всё обёрнуто в useMemo.
+   * @dependency searchQuery - отслеживаем изменение в поле поиска
+   * @dependency sortedTodos - отслеживаем изменение сортировки списка дел
+   * @dependency visible - отслеживаем появление скрытие модалки редактирования дела
+   * @dependency oldTodo - отслеживаем изменения отредактированого дела
+   * @return возвращаем отсортированный и отфильтрованный массив. Далее отдадим его в компонент TodoList
+   */
   const sortedAndSearchedTodo = useMemo(() => {
     return sortedTodos.filter(todo => todo.text.toLowerCase().includes(searchQuery.toLowerCase()))
   }, [searchQuery, sortedTodos, visible, oldTodo])
 
-  // меняем тип сортировки
+  /** 
+   * Меняем тип сортировки
+   * @param {string} sort - тип выбранной сортировки из компонента MySelect
+   * @description меняю состояние selectedSort. Далее это будет передано 
+   */
   const sortTodos = (sort) => {
     setSelectedSort(sort)
   }
