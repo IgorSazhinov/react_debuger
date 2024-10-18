@@ -19,9 +19,11 @@ app.get('/todos/', (req, res) => {
 })
 
 app.post('/todos/', (req, res) => {
-    todos = JSON.parse(req.body)
-    res.status(200).json(todos)
+    todos = req.body.date
+    res.status(200).json(todos.body)
 })
+
+
 
 const start = async () => {
     try {
