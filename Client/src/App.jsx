@@ -26,9 +26,9 @@ function App() {
     fetchTodo()
   }, [])
 
-  // useEffect(() => {
-  //   pushTodo()
-  // }, [todos])
+  useEffect(() => {
+    pushTodo()
+  }, [todos])
 
 
   // фетч запрос на сервер
@@ -40,12 +40,8 @@ function App() {
   async function pushTodo() {
     const res = await axios.post('http://localhost:7000/todos/', {
       method: 'POST',
-      headers: {
-        'Content-Type': 'application/json;charset=utf-8'
-      },
-      body: JSON.stringify(todos)
+      date: todos
     })
-
   }
 
   
