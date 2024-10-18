@@ -58,7 +58,6 @@ function App() {
    * @description выполняем проверку на случай незаданного типа сортировки. Выполняем сортировку обернутую в useMemo
    * @dependency selectedSort - отслеживаем изменение типа сортировки
    * @dependency todos - отслеживаем изменение массива со списком дел
-   * @dependency visible - отслеживаем появление скрытие модалки редактирования дела
    * @dependency oldTodo - отслеживаем изменения отредактированого дела
    * @return возвращаем отсортированный массив. Далее отдадам его в функцию sortedAndSearchedTodo
    */
@@ -67,7 +66,7 @@ function App() {
       return selectSortType()
     }
     return todos
-  }, [selectedSort, todos, visible, oldTodo])
+  }, [selectedSort, todos, oldTodo])
 
   /** 
    * Выполняем поис + сортировку
@@ -76,13 +75,12 @@ function App() {
    * @description отсортированный список фильтруем по строке поиска. всё обёрнуто в useMemo.
    * @dependency searchQuery - отслеживаем изменение в поле поиска
    * @dependency sortedTodos - отслеживаем изменение сортировки списка дел
-   * @dependency visible - отслеживаем появление скрытие модалки редактирования дела
    * @dependency oldTodo - отслеживаем изменения отредактированого дела
    * @return возвращаем отсортированный и отфильтрованный массив. Далее отдадим его в компонент TodoList
    */
   const sortedAndSearchedTodo = useMemo(() => {
     return sortedTodos.filter(todo => todo.text.toLowerCase().includes(searchQuery.toLowerCase()))
-  }, [searchQuery, sortedTodos, visible, oldTodo])
+  }, [searchQuery, sortedTodos, oldTodo])
 
   /** 
    * Меняем тип сортировки
