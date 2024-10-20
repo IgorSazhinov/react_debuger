@@ -1,13 +1,12 @@
 import axios from "axios";
 import React from "react";
-import { useEffect, useMemo, useState } from "react";
+import { useEffect, useState } from "react";
 import EditTodoForm from "./components/EditTodoForm";
 import TodoFilter from "./components/TodoFilter";
 import TodoForm from './components/TodoForm';
 import TodoList from './components/TodoList';
 import MyModal from "./components/UI/MyModal/MyModal";
-import MyTitle from "./components/UI/title/MyTitle";
-import useDateNow from "./hooks/useDateNow";
+import { useSortedAndSearchedTodo } from "./hooks/useSortedAndSearchedTodo";
 import './styles/App.css';
 
 function App() {
@@ -17,6 +16,7 @@ function App() {
   const [changedTodo, setChangedTodo] = useState(false)
   const [filter, setFilter] = useState({sort: 'date', query: ''})
   const [connectionCompleted, setConnectionCompleted] = useState(false)
+  const sortedAndSearchedTodo = useSortedAndSearchedTodo(filter.query, filter.sort, todos, changedTodo)
   
 
   // console.log('Дело изменилось?',changedTodo)
@@ -64,55 +64,6 @@ function App() {
       setConnectionCompleted(false)
     })
   }
-
-  
-  /** 
-   * Выбор типа сортировки
-   * @param {string} filter.sort - состояния последней выбранной сортировки. может принимать: 'text' - описание дела; 'date' - срок выполнения дела; 'today' - срок сегодня; 'completed' - выполнено или нет.
-   * @description для 'text' и 'date' используем метод localeCompare(); для 'today' фильтруем с помощью кастомного метода useDateNow(); для 'completed' фильтруем по обратному параметру completed
-   * @return возвращаем тип сортировки. Далее эта функция будет вызвана в sortedTodos
-  */
-  const selectSortType = () => {
-    if (filter.sort === 'text' || filter.sort === 'date') {
-      return [...todos].sort((a, b) => a[filter.sort].localeCompare(b[filter.sort]))
-    }
-    if (filter.sort === 'today') {
-      return todos.filter(t => t.date === useDateNow())
-    }
-    if (filter.sort === 'completed') {
-      return todos.filter(t => !t.completed)
-    }
-  }
-
-  /** 
-   * Выполняем сортировку
-   * @param {string} filter.sort - состояния последней выбранной сортировки. может принимать: 'text' - описание дела; 'date' - срок выполнения дела; 'today' - срок сегодня; 'completed' - выполнено или нет.
-   * @description выполняем проверку на случай незаданного типа сортировки. Выполняем сортировку обернутую в useMemo
-   * @dependency filter.sort - отслеживаем изменение типа сортировки
-   * @dependency todos - отслеживаем изменение массива со списком дел
-   * @dependency oldTodo - отслеживаем изменения отредактированого дела
-   * @return возвращаем отсортированный массив. Далее отдадам его в функцию sortedAndSearchedTodo
-   */
-  const sortedTodos = useMemo(() => {
-    if (filter.sort) {
-      return selectSortType()
-    }
-    return todos
-  }, [filter.sort, todos, changedTodo])
-
-  /** 
-   * Выполняем поиск после сортировки
-   * @param {object} sortedTodos - отсортированное дело.
-   * @param {string} filter.query - состояние строки поиска.
-   * @description отсортированный список фильтруем по строке поиска. всё обёрнуто в useMemo.
-   * @dependency filter.query - отслеживаем изменение в поле поиска
-   * @dependency sortedTodos - отслеживаем изменение сортировки списка дел
-   * @dependency oldTodo - отслеживаем изменения отредактированого дела
-   * @return возвращаем отсортированный и отфильтрованный массив. Далее отдадим его в компонент TodoList
-   */
-  const sortedAndSearchedTodo = useMemo(() => {
-    return sortedTodos.filter(todo => todo.text.toLowerCase().includes(filter.query.toLowerCase()))
-  }, [filter.query, sortedTodos, changedTodo])
 
   /** 
    * Добавить новое дело в список
