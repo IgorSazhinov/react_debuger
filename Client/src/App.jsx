@@ -2,6 +2,7 @@ import axios from "axios";
 import React from "react";
 import { useEffect, useMemo, useState } from "react";
 import EditTodoForm from "./components/EditTodoForm";
+import TodoFilter from "./components/TodoFilter";
 import TodoForm from './components/TodoForm';
 import TodoList from './components/TodoList';
 import MyInput from './components/UI/Input/MyInput';
@@ -16,10 +17,9 @@ function App() {
   const [visible, setVisible] = useState(false)
   const [oldTodo, setOldTodo] = useState({id: null, date: '', text: '', completed: false})
   const [changedTodo, setChangedTodo] = useState(false)
-  const [selectedSort, setSelectedSort] = useState('date')
-  const [searchQuery, setSearchQuery] = useState('')
+  const [filter, setFilter] = useState({sort: 'date', query: ''})
   const [connectionCompleted, setConnectionCompleted] = useState(false)
-
+  
 
   // console.log('Дело изменилось?',changedTodo)
   console.log('список дел изменилось?',todos)
@@ -67,62 +67,54 @@ function App() {
     })
   }
 
+  
   /** 
    * Выбор типа сортировки
-   * @param {string} selectedSort - состояния последней выбранной сортировки. может принимать: 'text' - описание дела; 'date' - срок выполнения дела; 'today' - срок сегодня; 'completed' - выполнено или нет.
+   * @param {string} filter.sort - состояния последней выбранной сортировки. может принимать: 'text' - описание дела; 'date' - срок выполнения дела; 'today' - срок сегодня; 'completed' - выполнено или нет.
    * @description для 'text' и 'date' используем метод localeCompare(); для 'today' фильтруем с помощью кастомного метода useDateNow(); для 'completed' фильтруем по обратному параметру completed
    * @return возвращаем тип сортировки. Далее эта функция будет вызвана в sortedTodos
   */
   const selectSortType = () => {
-    if (selectedSort === 'text' || selectedSort === 'date') {
-      return [...todos].sort((a, b) => a[selectedSort].localeCompare(b[selectedSort]))
+    if (filter.sort === 'text' || filter.sort === 'date') {
+      return [...todos].sort((a, b) => a[filter.sort].localeCompare(b[filter.sort]))
     }
-    if (selectedSort === 'today') {
+    if (filter.sort === 'today') {
       return todos.filter(t => t.date === useDateNow())
     }
-    if (selectedSort === 'completed') {
+    if (filter.sort === 'completed') {
       return todos.filter(t => !t.completed)
     }
   }
 
   /** 
    * Выполняем сортировку
-   * @param {string} selectedSort - состояния последней выбранной сортировки. может принимать: 'text' - описание дела; 'date' - срок выполнения дела; 'today' - срок сегодня; 'completed' - выполнено или нет.
+   * @param {string} filter.sort - состояния последней выбранной сортировки. может принимать: 'text' - описание дела; 'date' - срок выполнения дела; 'today' - срок сегодня; 'completed' - выполнено или нет.
    * @description выполняем проверку на случай незаданного типа сортировки. Выполняем сортировку обернутую в useMemo
-   * @dependency selectedSort - отслеживаем изменение типа сортировки
+   * @dependency filter.sort - отслеживаем изменение типа сортировки
    * @dependency todos - отслеживаем изменение массива со списком дел
    * @dependency oldTodo - отслеживаем изменения отредактированого дела
    * @return возвращаем отсортированный массив. Далее отдадам его в функцию sortedAndSearchedTodo
    */
   const sortedTodos = useMemo(() => {
-    if (selectedSort) {
+    if (filter.sort) {
       return selectSortType()
     }
     return todos
-  }, [selectedSort, todos, changedTodo])
+  }, [filter.sort, todos, changedTodo])
 
   /** 
    * Выполняем поиск после сортировки
    * @param {object} sortedTodos - отсортированное дело.
-   * @param {string} searchQuery - состояние строки поиска.
+   * @param {string} filter.query - состояние строки поиска.
    * @description отсортированный список фильтруем по строке поиска. всё обёрнуто в useMemo.
-   * @dependency searchQuery - отслеживаем изменение в поле поиска
+   * @dependency filter.query - отслеживаем изменение в поле поиска
    * @dependency sortedTodos - отслеживаем изменение сортировки списка дел
    * @dependency oldTodo - отслеживаем изменения отредактированого дела
    * @return возвращаем отсортированный и отфильтрованный массив. Далее отдадим его в компонент TodoList
    */
   const sortedAndSearchedTodo = useMemo(() => {
-    return sortedTodos.filter(todo => todo.text.toLowerCase().includes(searchQuery.toLowerCase()))
-  }, [searchQuery, sortedTodos, changedTodo])
-
-  /** 
-   * Меняем тип сортировки
-   * @param {string} sort - тип выбранной сортировки из компонента MySelect
-   * @description меняю состояние selectedSort. Далее это будет передано 
-   */
-  const sortTodos = (sort) => {
-    setSelectedSort(sort)
-  }
+    return sortedTodos.filter(todo => todo.text.toLowerCase().includes(filter.query.toLowerCase()))
+  }, [filter.query, sortedTodos, changedTodo])
 
   /** 
    * Добавить новое дело в список
@@ -205,20 +197,7 @@ function App() {
           : <></>
       }
       <TodoForm create={createTodo} />
-      <div style={{display: 'flex', marginTop: '5px'}}>
-        <MyInput value={searchQuery} onChange={e => setSearchQuery(e.target.value)}>Найти дело</MyInput> 
-        <MySelect
-          defaultValue='Сортировка по'
-          options={[
-            {value: 'date', name: 'Дате'},
-            {value: 'text', name: 'Названию'},
-            {value: 'today', name: 'Только за сегодня'},
-            {value: 'completed', name: 'Невыполненные'}
-          ]}
-          value={selectedSort}
-          onChange={sortTodos}
-        />
-      </div>
+      <TodoFilter filter={filter} setFilter={setFilter}/>
       {
         connectionCompleted ? (
           (sortedAndSearchedTodo.length) ? (
