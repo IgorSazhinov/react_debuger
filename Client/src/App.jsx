@@ -1,11 +1,11 @@
-import axios from "axios";
 import React from "react";
-import { useEffect, useState } from "react";
+import { useState } from "react";
 import EditTodoForm from "./components/EditTodoForm";
 import TodoFilter from "./components/TodoFilter";
 import TodoForm from './components/TodoForm';
 import TodoList from './components/TodoList';
 import MyModal from "./components/UI/MyModal/MyModal";
+import { useGetTodo, useSendTodo } from "./hooks/useGetAndSendTodo";
 import { useSortedAndSearchedTodo } from "./hooks/useSortedAndSearchedTodo";
 import './styles/App.css';
 
@@ -18,52 +18,10 @@ function App() {
   const [connectionCompleted, setConnectionCompleted] = useState(false)
   const sortedAndSearchedTodo = useSortedAndSearchedTodo(filter.query, filter.sort, todos, changedTodo)
   
+  useGetTodo(setConnectionCompleted, setTodos)
+  useSendTodo(connectionCompleted, changedTodo, setChangedTodo, setConnectionCompleted, todos)
 
-  // console.log('Дело изменилось?',changedTodo)
   console.log('список дел изменилось?',todos)
-  // console.log('проверка подключения',connectionCompleted)
-
-
-  // первая отрисовка при загрузке страницы
-  useEffect(() => {
-    console.log('первичная загрузка')
-    fetchTodo()
-  }, [])
-
-  useEffect(() => {
-    if (connectionCompleted && changedTodo) {
-      console.log('отправка на сервер')
-      pushTodo()
-      setChangedTodo(false)
-    }
-  }, [changedTodo])
-
-  // запрос на сервер
-  async function fetchTodo() {
-    await axios.get('http://localhost:7000/todos/').then((response) => {
-      setConnectionCompleted(true)
-      setTodos(response.data)
-    }).catch((e) => {
-      console.error(e)
-      setConnectionCompleted(false)
-    })
-  }
-
-  // отправка на сервер
-  async function pushTodo() {
-    await axios.post('http://localhost:7000/todos/', {
-      method: 'POST',
-      headers: {
-        'Content-Type': 'application/x-www-form-urlencoded'
-      },
-      date: todos
-    }).then(() => {
-      setConnectionCompleted(true)
-    }).catch((e) => {
-      console.error(e)
-      setConnectionCompleted(false)
-    })
-  }
 
   /** 
    * Добавить новое дело в список

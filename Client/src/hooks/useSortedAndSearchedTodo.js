@@ -2,10 +2,10 @@ import { useMemo } from "react"
 import useDateNow from "./useDateNow"
 
 /** 
-    * Выбор типа сортировки
+    * применение типа сортировки
     * @param {string} sort - состояния последней выбранной сортировки. может принимать: 'text' - описание дела; 'date' - срок выполнения дела; 'today' - срок сегодня; 'completed' - выполнено или нет.
     * @description для 'text' и 'date' используем метод localeCompare(); для 'today' фильтруем с помощью кастомного метода useDateNow(); для 'completed' фильтруем по обратному параметру completed
-    * @return  {Array} возвращаем тип сортировки. Далее эта функция будет вызвана в sortedTodos
+    * @return  {Array} применяем тип сортировки. Далее эта функция будет вызвана в sortedTodos
 */
 const selectSortType = (sort, todos) => {
     if (sort === 'text' || sort === 'date') {
@@ -37,7 +37,6 @@ export const useSortedTodo = (sort, todos, changedTodo) => {
     }, [sort, todos, changedTodo])
     return sortedTodos
 }
-
 
 /** 
     * Выполняем поиск после сортировки
