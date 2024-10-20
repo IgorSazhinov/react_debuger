@@ -21,8 +21,9 @@ function App() {
   const [connectionCompleted, setConnectionCompleted] = useState(false)
 
 
-  console.log('Дело изменилось?',changedTodo)
+  // console.log('Дело изменилось?',changedTodo)
   console.log('список дел изменилось?',todos)
+  // console.log('проверка подключения',connectionCompleted)
 
 
   // первая отрисовка при загрузке страницы
@@ -226,7 +227,7 @@ function App() {
                 <MyTitle>Список дел пуст</MyTitle>
               )
         ) : (
-          <MyTitle>Нет подключения к серверу</MyTitle>
+          <MyTitle>Идет загрузка с сервера...</MyTitle>
         )
       }
       <div className='pagination'></div>
