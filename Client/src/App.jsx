@@ -15,9 +15,15 @@ function App() {
   const [todos, setTodos] = useState([])
   const [visible, setVisible] = useState(false)
   const [oldTodo, setOldTodo] = useState({id: null, date: '', text: '', completed: false})
+  const [changedTodo, setChangedTodo] = useState(false)
   const [selectedSort, setSelectedSort] = useState('date')
   const [searchQuery, setSearchQuery] = useState('')
   const [connectionCompleted, setConnectionCompleted] = useState(false)
+
+
+  console.log('Дело изменилось?',changedTodo)
+  console.log('список дел изменилось?',todos)
+
 
   // первая отрисовка при загрузке страницы
   useEffect(() => {
@@ -25,19 +31,17 @@ function App() {
     fetchTodo()
   }, [])
 
-  console.log(connectionCompleted)
-
   useEffect(() => {
-    if (connectionCompleted) {
+    if (connectionCompleted && changedTodo) {
+      console.log('отправка на сервер')
       pushTodo()
+      setChangedTodo(false)
     }
-  }, [todos, oldTodo])
-
+  }, [changedTodo])
 
   // запрос на сервер
   async function fetchTodo() {
     await axios.get('http://localhost:7000/todos/').then((response) => {
-      console.log('отправвка на сервер')
       setConnectionCompleted(true)
       setTodos(response.data)
     }).catch((e) => {
@@ -46,7 +50,7 @@ function App() {
     })
   }
 
-
+  // отправка на сервер
   async function pushTodo() {
     await axios.post('http://localhost:7000/todos/', {
       method: 'POST',
@@ -94,7 +98,7 @@ function App() {
       return selectSortType()
     }
     return todos
-  }, [selectedSort, todos, oldTodo])
+  }, [selectedSort, todos, changedTodo])
 
   /** 
    * Выполняем поиск после сортировки
@@ -108,7 +112,7 @@ function App() {
    */
   const sortedAndSearchedTodo = useMemo(() => {
     return sortedTodos.filter(todo => todo.text.toLowerCase().includes(searchQuery.toLowerCase()))
-  }, [searchQuery, sortedTodos, oldTodo])
+  }, [searchQuery, sortedTodos, changedTodo])
 
   /** 
    * Меняем тип сортировки
@@ -127,6 +131,7 @@ function App() {
   const createTodo = (newTodo) => {
     if (connectionCompleted) {
       setTodos([...todos, newTodo])
+      setChangedTodo(true)
     }
   }
 
@@ -148,12 +153,14 @@ function App() {
    * @description Проверка на то что есть подключение. Помещаю в состояние todos новый массив с измененным делом. Очищаю oldTodo. Закрываю модалку.
    */ 
   const saveEditedTodo = (todo) => {
+    
     if (connectionCompleted) {
       setTodos(() => {
         const i = todos.findIndex(el => el.id === todo.id)
         todos[i] = todo
         return todos
       })
+      setChangedTodo(true)
       setOldTodo({id: null, date: '', text: '', completed: false})
       setVisible(false)
     }
@@ -166,6 +173,7 @@ function App() {
   const removeTodo = (todo) => {
     if (connectionCompleted) {
       setTodos(todos.filter(t => t.id !== todo.id))
+      setChangedTodo(true)
     }
   }
 
@@ -181,6 +189,7 @@ function App() {
         todos[i] = {...todo, completed: !checkIn}
         return todos
       })
+      setChangedTodo(true)
       setOldTodo({id: null, date: '', text: '', completed: false})
     }
   }
