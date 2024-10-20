@@ -5,7 +5,7 @@ import MyButton from "./UI/button/Mybutton";
 import MyDate from "./UI/date/MyDate";
 import MyInput from "./UI/Input/MyInput";
 
-const TodoForm = ({children, ...props}) => {
+const TodoForm = (props) => {
     const [todo, setTodo] = useState({text: '', date: useDateNow()})
     const [description, setDescription] = useState('Описание задачи')
 
@@ -28,7 +28,7 @@ const TodoForm = ({children, ...props}) => {
         <form className="todoForm">
             <MyDate  value={todo.date} onChange={e => setTodo({...todo, date: e.target.value})}/>
             <MyInput value={todo.text} onChange={e => setTodo({...todo, text: e.target.value})}>{description}</MyInput>
-            <MyButton onClick={addNewTodo}>{children}</MyButton>
+            <MyButton onClick={addNewTodo}>Добавить</MyButton>
         </form>
     );
 };

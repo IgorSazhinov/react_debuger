@@ -204,7 +204,7 @@ function App() {
             </MyModal>
           : <></>
       }
-      <TodoForm create={createTodo}>Добавить</TodoForm>
+      <TodoForm create={createTodo} />
       <div style={{display: 'flex', marginTop: '5px'}}>
         <MyInput value={searchQuery} onChange={e => setSearchQuery(e.target.value)}>Найти дело</MyInput> 
         <MySelect
@@ -230,7 +230,6 @@ function App() {
           <MyTitle>Идет загрузка с сервера...</MyTitle>
         )
       }
-      <div className='pagination'></div>
     </div>
   );
 };

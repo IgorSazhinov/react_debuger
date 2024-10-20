@@ -4,7 +4,7 @@ import MyButton from "./UI/button/Mybutton";
 import MyDate from "./UI/date/MyDate";
 import MyInput from "./UI/Input/MyInput";
 
-const EditTodoForm = ({oldTodo, setOldTodo, saveEditedTodo, setVisible, ...props}) => {
+const EditTodoForm = ({oldTodo, setOldTodo, saveEditedTodo, setVisible}) => {
     
     const [description, setDescription] = useState('Описание задачи')
 
