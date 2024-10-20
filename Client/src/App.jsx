@@ -21,27 +21,44 @@ function App() {
 
   // первая отрисовка при загрузке страницы
   useEffect(() => {
+    console.log('первичная загрузка')
     fetchTodo()
   }, [])
 
+  console.log(connectionCompleted)
+
   useEffect(() => {
-    pushTodo()
+    if (connectionCompleted) {
+      pushTodo()
+    }
   }, [todos, oldTodo])
 
-  // фетч запрос на сервер
+
+  // запрос на сервер
   async function fetchTodo() {
-    const response = await axios.get('http://localhost:7000/todos/').catch( () => {
-      console.log(123);
+    await axios.get('http://localhost:7000/todos/').then((response) => {
+      console.log('отправвка на сервер')
+      setConnectionCompleted(true)
+      setTodos(response.data)
+    }).catch((e) => {
+      console.error(e)
+      setConnectionCompleted(false)
     })
-    setTodos(response.data)
   }
 
+
   async function pushTodo() {
-    const res = await axios.post('http://localhost:7000/todos/', {
+    await axios.post('http://localhost:7000/todos/', {
       method: 'POST',
+      headers: {
+        'Content-Type': 'application/x-www-form-urlencoded'
+      },
       date: todos
-    }).catch( () => {
-      console.log(123);
+    }).then(() => {
+      setConnectionCompleted(true)
+    }).catch((e) => {
+      console.error(e)
+      setConnectionCompleted(false)
     })
   }
 
@@ -105,57 +122,67 @@ function App() {
   /** 
    * Добавить новое дело в список
    * @param {object} newTodo - новое дело из формы
-   * @description помещаю в состояние todos новый массив из старого массива и нового дела
+   * @description Проверка на то что есть подключение. Помещаю в состояние todos новый массив из старого массива и нового дела
    */
   const createTodo = (newTodo) => {
-    setTodos([...todos, newTodo])
+    if (connectionCompleted) {
+      setTodos([...todos, newTodo])
+    }
   }
 
   /** 
    * Отредактировать дело
    * @param {object} todo - дело из списка, по которому сработало событие для редактирования
-   * @description помещаю в состояние oldTodo дело для редактирования и отображаю модалку с редактором дела
+   * @description Проверка на то что есть подключение. Помещаю в состояние oldTodo дело для редактирования и отображаю модалку с редактором дела
    */
   const editTodo = (todo) => {
-    setOldTodo(todo)
-    setVisible(true)
+    if (connectionCompleted) {
+      setOldTodo(todo)
+      setVisible(true)
+    }
   }
 
   /** 
    * Сохранить отредактированное дело
    * @param {object} todo - дело после того как его отредактировали
-   * @description помещаю в состояние todos новый массив с измененным делом. Очищаю oldTodo. Закрываю модалку.
+   * @description Проверка на то что есть подключение. Помещаю в состояние todos новый массив с измененным делом. Очищаю oldTodo. Закрываю модалку.
    */ 
   const saveEditedTodo = (todo) => {
-    setTodos(() => {
-      const i = todos.findIndex(el => el.id === todo.id)
-      todos[i] = todo
-      return todos
-    })
-    setOldTodo({id: null, date: '', text: '', completed: false})
-    setVisible(false)
+    if (connectionCompleted) {
+      setTodos(() => {
+        const i = todos.findIndex(el => el.id === todo.id)
+        todos[i] = todo
+        return todos
+      })
+      setOldTodo({id: null, date: '', text: '', completed: false})
+      setVisible(false)
+    }
   }
 
   /** Удалить дело из списка
    * @param {object} todo - дело по которому сработало событие удаления
-   * @description помещаю в состояние todos отфильтрованный массив без указанного дела
+   * @description Проверка на то что есть подключение. Помещаю в состояние todos отфильтрованный массив без указанного дела
    */
   const removeTodo = (todo) => {
-    setTodos(todos.filter(t => t.id !== todo.id))
+    if (connectionCompleted) {
+      setTodos(todos.filter(t => t.id !== todo.id))
+    }
   }
 
   /** Изменение состояния выполненного дела из списка
    * @param {object} todo - дело по которому сработало событие изменения состояния completed
    * @param {object} checkIn - состояние completed до изменения
-   * @description помещаю в состояние todos с выполненным или невыполенным делом
+   * @description Проверка на то что есть подключение. Помещаю в состояние todos с выполненным или невыполенным делом
    */
   const editComlitedTodo = (todo, checkIn) => {
-    setTodos(() => {
-      const i = todos.findIndex(el => el.id === todo.id)
-      todos[i] = {...todo, completed: !checkIn}
-      return todos
-    })
-    setOldTodo({id: null, date: '', text: '', completed: false})
+    if (connectionCompleted) {
+      setTodos(() => {
+        const i = todos.findIndex(el => el.id === todo.id)
+        todos[i] = {...todo, completed: !checkIn}
+        return todos
+      })
+      setOldTodo({id: null, date: '', text: '', completed: false})
+    }
   }
 
   return (
@@ -183,9 +210,15 @@ function App() {
         />
       </div>
       {
-        sortedAndSearchedTodo.length
-          ? <TodoList remove={removeTodo} edit={editTodo} todos={sortedAndSearchedTodo} setTodos={setTodos} editComlitedTodo={editComlitedTodo}/>
-          : <MyTitle>Список дел пуст</MyTitle>
+        connectionCompleted ? (
+          (sortedAndSearchedTodo.length) ? (
+               <TodoList remove={removeTodo} edit={editTodo} todos={sortedAndSearchedTodo} setTodos={setTodos} editComlitedTodo={editComlitedTodo}/>
+              ) : (
+                <MyTitle>Список дел пуст</MyTitle>
+              )
+        ) : (
+          <MyTitle>Нет подключения к серверу</MyTitle>
+        )
       }
       <div className='pagination'></div>
     </div>
