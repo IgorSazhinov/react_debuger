@@ -187,19 +187,20 @@ function App() {
 
   return (
     <div className='App'>
-      {
-        visible
-          ? <MyModal visible={visible} setVisible={setVisible}>
-              <EditTodoForm oldTodo={oldTodo} saveEditedTodo={saveEditedTodo} setOldTodo={setOldTodo} setVisible={setVisible} />
-            </MyModal>
-          : <></>
-      }
+      <MyModal visible={visible} setVisible={setVisible}>
+        <EditTodoForm
+          oldTodo={oldTodo}
+          saveEditedTodo={saveEditedTodo}
+          setOldTodo={setOldTodo}
+          setVisible={setVisible}
+        />
+      </MyModal>
       <TodoForm create={createTodo} />
       <TodoFilter filter={filter} setFilter={setFilter}/>
       <TodoList 
         remove={removeTodo}
         edit={editTodo}
-        todos={sortedAndSearchedTodo}
+        sortedAndSearchedTodo={sortedAndSearchedTodo}
         setTodos={setTodos}
         editComlitedTodo={editComlitedTodo}
         connectionCompleted={connectionCompleted}
