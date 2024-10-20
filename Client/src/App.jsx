@@ -5,9 +5,7 @@ import EditTodoForm from "./components/EditTodoForm";
 import TodoFilter from "./components/TodoFilter";
 import TodoForm from './components/TodoForm';
 import TodoList from './components/TodoList';
-import MyInput from './components/UI/Input/MyInput';
 import MyModal from "./components/UI/MyModal/MyModal";
-import MySelect from "./components/UI/select/MySelect";
 import MyTitle from "./components/UI/title/MyTitle";
 import useDateNow from "./hooks/useDateNow";
 import './styles/App.css';
@@ -198,17 +196,14 @@ function App() {
       }
       <TodoForm create={createTodo} />
       <TodoFilter filter={filter} setFilter={setFilter}/>
-      {
-        connectionCompleted ? (
-          (sortedAndSearchedTodo.length) ? (
-               <TodoList remove={removeTodo} edit={editTodo} todos={sortedAndSearchedTodo} setTodos={setTodos} editComlitedTodo={editComlitedTodo}/>
-              ) : (
-                <MyTitle>Список дел пуст</MyTitle>
-              )
-        ) : (
-          <MyTitle>Идет загрузка с сервера...</MyTitle>
-        )
-      }
+      <TodoList 
+        remove={removeTodo}
+        edit={editTodo}
+        todos={sortedAndSearchedTodo}
+        setTodos={setTodos}
+        editComlitedTodo={editComlitedTodo}
+        connectionCompleted={connectionCompleted}
+      />
     </div>
   );
 };
