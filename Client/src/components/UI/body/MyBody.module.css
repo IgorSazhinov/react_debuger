@@ -1,0 +1,18 @@
+.myBody {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    max-width: 350px;
+    align-items: center;
+    font-size: 14px;
+}
+
+.myBody p {
+    overflow: auto;
+    text-align: center;
+    margin: 0, 5px;
+}
+
+.myBody.completed {
+    text-decoration: line-through;
+}
